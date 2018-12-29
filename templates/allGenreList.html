@@ -1,0 +1,20 @@
+{% extends "main.html" %}
+{% block content %}
+	<div class="row divider blue">
+		<div class="col-md-12"></div>
+	</div>
+	<div class="row banner main">
+		<div class="col-md-1"></div>
+		<div class="col-md-11 padding-none">
+			<h1>MOVIES</h1>
+		</div>
+	</div>
+	<br>
+	<br>
+	<button onclick="window.location.href = 'http://localhost:8000/login';">Login</button>
+	<button onclick="window.location.href = 'http://localhost:8000/gdisconnect';">Logout</button>
+		{% for i in list %}
+			<a href = '{{url_for('showGenre', genre_id = i.id) }}'>{{i.name}}</a><br>
+			<hr><br><hr>
+		{% endfor %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "main.html" %}
+{% block content %}
+		<h2> Here are the {{genre.name}} movies</h2>
+		<hr>
+		{% with messages = get_flashed_messages() %}
+			{% if messages %}
+				<ul>
+					{% for message in messages %}
+					<li><strong>{{message}}</strong></li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		{% endwith %}
+
+		{% for i in movie %}
+			<div>
+				<h3> {{i.name}}</h3>
+				<p> {{i.bio}}</p>
+				<hr>
+			</div>
+		{% endfor %}
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "main.html" %}
+{% block content %}
+		
+		<h2> Here are the {{genre.name}} movies</h2>
+		<hr>
+
+		{% with messages = get_flashed_messages() %}
+		{% if messages %}
+		<ul>
+			{% for message in messages %}
+			<li><strong>{{message}}</strong></li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		{% endwith %}
+		{% for i in movie %}
+		<div>
+			<h3> {{i.name}}</h3>
+			<p> {{i.bio}}</p>
+			<!-- Edit Form -->
+			<form method ='POST' enctype='multipart/form-data' action ='{{ url_for('editMovie',genre_id=genre.id, movie_id = i.id)}}'>
+				<input type='text' name='name' placeholder='name'/>
+				<input type='text' name='bio' placeholder='bio'/>
+				<button type='submit'> edit movie! </button>
+			</form>
+			<!-- Delete Form -->
+			<form method ='POST' enctype='multipart/form-data' action ='{{ url_for('deleteMovie',genre_id=genre.id, movie_id = i.id)}}'>
+				<button type='submit'> delete movie! </button>
+			</form>
+		</div>
+	</br>
+	<hr>
+	{% endfor %}
+	<!-- Add New Movie -->
+	<h3> Add New Movie </h3>
+	<form method ='POST' enctype='multipart/form-data' action ='{{ url_for('showGenre',genre_id=genre.id)}}'>
+		<input type='text' name='name' placeholder='name'/>
+		<input type='text' name='bio' placeholder='bio'/>
+		<button type='submit'> add movie! </button>
+	</form>
+{% endblock %}
