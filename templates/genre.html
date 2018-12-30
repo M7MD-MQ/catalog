@@ -1,6 +1,6 @@
 {% extends "main.html" %}
 {% block content %}
-		
+
 		<h2> Here are the {{genre.name}} movies</h2>
 		<hr>
 
@@ -19,8 +19,8 @@
 			<p> {{i.bio}}</p>
 			<!-- Edit Form -->
 			<form method ='POST' enctype='multipart/form-data' action ='{{ url_for('editMovie',genre_id=genre.id, movie_id = i.id)}}'>
-				<input type='text' name='name' placeholder='name'/>
-				<input type='text' name='bio' placeholder='bio'/>
+				<input type='text' name='name' placeholder='name' required/>
+				<input type='text' name='bio' placeholder='bio' required/>
 				<button type='submit'> edit movie! </button>
 			</form>
 			<!-- Delete Form -->
@@ -34,8 +34,8 @@
 	<!-- Add New Movie -->
 	<h3> Add New Movie </h3>
 	<form method ='POST' enctype='multipart/form-data' action ='{{ url_for('showGenre',genre_id=genre.id)}}'>
-		<input type='text' name='name' placeholder='name'/>
-		<input type='text' name='bio' placeholder='bio'/>
+		<input type='text' name='name' placeholder='name' required/>
+		<input type='text' name='bio' placeholder='bio' required/>
 		<button type='submit'> add movie! </button>
 	</form>
 {% endblock %}

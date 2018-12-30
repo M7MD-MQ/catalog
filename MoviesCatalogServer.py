@@ -1,7 +1,13 @@
 #! /usr/bin/env python
-from flask import Flask, render_template, request
-from flask import redirect, jsonify, url_for, flash
-
+from flask import (
+    Flask,
+    render_template,
+    request,
+    redirect,
+    jsonify,
+    url_for,
+    flash
+)
 
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
@@ -126,7 +132,11 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += ' " style = "width: 300px;'\
+              'height: 300px;'\
+              'border-radius: 150px;'\
+              '-webkit-border-radius: 150px;'\
+              '-moz-border-radius: 150px;"> '
     flash("you are now logged in as %s" % login_session['username'])
     print "done!"
     return output
@@ -151,7 +161,7 @@ def getUserID(email):
     try:
         user = session.query(User).filter_by(email=email).one()
         return user.id
-    except e:
+    except NoResultFound:
         return None
 
 
@@ -179,7 +189,7 @@ def gdisconnect():
 
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
-        return response
+        return redirect(url_for('showAllGenre'))
 
     else:
         # For whatever reason, the given token was invalid.
@@ -225,7 +235,8 @@ def showGenre(genre_id):
     movie = session.query(Movie).filter_by(genre_id=genre_id).all()
     if request.method == 'POST':
         newMovie = Movie(name=request.form['name'],
-                         bio=request.form['bio'], genre_id=genre_id)
+                         bio=request.form['bio'], genre_id=genre_id,
+                         user_id=getUserID(login_session['email']))
         session.add(newMovie)
         session.commit()
         flash("New movie has been added")
@@ -246,6 +257,9 @@ def editMovie(genre_id, movie_id):
     if 'username' not in login_session:
         return redirect('/login')
     if request.method == 'POST':
+        if getUserID(login_session['email']) != int(editMovie.user_id):
+            flash("Sorry, You Are Not Authorized To Edit This Movie!")
+            return redirect(url_for('showGenre', genre_id=genre_id))
         if request.form['name']:
             editMovie.name = request.form['name']
         if request.form['bio']:
@@ -266,6 +280,9 @@ def deleteMovie(genre_id, movie_id):
     if 'username' not in login_session:
         return redirect('/login')
     if request.method == 'POST':
+        if getUserID(login_session['email']) != int(movieToBeDeleted.user_id):
+            flash("Sorry, You Are Not Authorized To Delet This Movie!")
+            return redirect(url_for('showGenre', genre_id=genre_id))
         session.delete(movieToBeDeleted)
         session.commit()
         flash("Movie has been deleted")

@@ -11,9 +11,17 @@
 	</div>
 	<br>
 	<br>
-	<button onclick="window.location.href = 'http://localhost:8000/login';">Login</button>
-	<button onclick="window.location.href = 'http://localhost:8000/gdisconnect';">Logout</button>
-		{% for i in list %}
+	<div>
+  	 {% if 'username' not in session %}
+    	<button onclick="window.location.href = '{{ url_for('showLogin') }}';">Login</button>
+			<hr>
+		{% else %}
+			<button onclick="window.location.href = '{{ url_for('gdisconnect') }}';">Logout</button>
+			<hr>
+		{% endif %}
+  </div>
+
+	{% for i in list %}
 			<a href = '{{url_for('showGenre', genre_id = i.id) }}'>{{i.name}}</a><br>
 			<hr><br><hr>
 		{% endfor %}

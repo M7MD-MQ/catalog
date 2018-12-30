@@ -53,7 +53,7 @@ class Movie(Base):
         }
 
 
-engine = create_engine('sqlite:///movies4.db')
+engine = create_engine('sqlite:///movies.db')
 
 
 Base.metadata.create_all(engine)

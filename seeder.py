@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 
 from genre_setup import Genre, Base, Movie, User
 
-engine = create_engine('sqlite:///movies4.db')
+engine = create_engine('sqlite:///movies.db')
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
 Base.metadata.bind = engine
